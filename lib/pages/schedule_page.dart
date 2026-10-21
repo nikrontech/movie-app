@@ -1,0 +1,136 @@
+import 'package:dart_date/dart_date.dart';
+import 'package:flutter/material.dart';
+import 'package:movie_app/app_text.dart';
+import 'package:movie_app/models/cinema.dart';
+import 'package:movie_app/models/schedule.dart';
+import 'package:movie_app/pages/search_page.dart';
+import 'package:movie_app/providers/api.dart';
+import 'package:movie_app/style.dart';
+import 'package:movie_app/widgets/cinema_list.dart';
+import 'package:movie_app/widgets/sliver_search_bar.dart';
+import 'package:movie_app/widgets/week_button_list.dart';
+
+class SchedulePage extends StatefulWidget {
+  const SchedulePage({Key key}) : super(key: key);
+
+  @override
+  _SchedulePageState createState() => _SchedulePageState();
+}
+
+class _SchedulePageState extends State<SchedulePage> {
+  Future<Schedule> schedule;
+
+  @override
+  void initState() {
+    schedule = Api.fetchSchedule(dateFrom: DateTime.now());
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+        bottomNavigationBar: BottomAppBar(
+          child: Container(
+            padding: const EdgeInsets.only(
+              top: Style.padding,
+            ),
+            margin: const EdgeInsets.only(
+              bottom: Style.margin,
+            ),
+            height: 50,
+            child: WeekButtonList(
+              margin: const EdgeInsets.only(
+                left: Style.margin,
+                right: Style.margin,
+              ),
+              onChanged: (DateTime dateSelected) {
+                setState(() {
+                  schedule = Api.fetchSchedule(
+                    dateFrom: dateSelected,
+                  );
+                });
+              },
+            ),
+          ),
+        ),
+        body: Material(
+          color: Theme.of(context).primaryColor,
+          child: FutureBuilder<Schedule>(
+            future: schedule,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                final List<Cinema> cinemas = snapshot.data.cinemas;
+
+                return CustomScrollView(
+                  physics: const ClampingScrollPhysics(),
+                  slivers: <Widget>[
+                    SliverSearchBar(
+                      onSubmitted: (String searchText) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => SearchPage(
+                              searchText: searchText,
+                              schedule: Api.fetchSchedule(
+                                dateFrom: DateTime.now(),
+                                dateTo: DateTime.now().addDays(7).endOfDay,
+                                searchText: searchText,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    const SliverPadding(
+                      padding: EdgeInsets.only(
+                        top: Style.padding,
+                      ),
+                    ),
+                    if (cinemas.isNotEmpty) ...[
+                      for (Cinema cinema in cinemas) ...[
+                        CinemaList(
+                          cinema: cinema,
+                          showShowingTime: true,
+                        )
+                      ],
+                    ] else ...[
+                      SliverFillRemaining(
+                        child: Padding(
+                          padding: const EdgeInsets.all(Style.padding),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              const Icon(
+                                Icons.movie,
+                                size: Style.iconSize,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  top: Style.padding,
+                                ),
+                                child: Text(
+                                  AppText.noMovies,
+                                  style: TextStyle(
+                                    color:
+                                        Theme.of(context).colorScheme.secondary,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ],
+                );
+              } else {
+                return const Center(child: CircularProgressIndicator());
+              }
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}
