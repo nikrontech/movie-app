@@ -1,6 +1,7 @@
 import 'package:dart_date/dart_date.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
+import 'package:movie_app/app_text.dart';
 import 'package:movie_app/models/showing.dart';
 import 'package:movie_app/style.dart';
 
@@ -79,7 +80,7 @@ class ShowingList extends StatelessWidget {
                   Icon(Icons.event_busy, size: Style.iconSize, color: secondary),
                   const SizedBox(height: Style.padding),
                   Text(
-                    'No showings for this day',
+                    AppText.noShowings,
                     textAlign: TextAlign.center,
                     style: TextStyle(color: secondary),
                   ),

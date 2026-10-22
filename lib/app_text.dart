@@ -1,10 +1,11 @@
 class AppText {
-  static const String starring = 'Starring';
-  static const String directedBy = 'Directed by';
-  static const String genre = 'Genre';
-  static const String noMovies = 'No movies found.';
-  static const String noResults = 'No results for';
-  static const String searchMovies = 'Search for movies...';
+  static const String starring = 'Vaidina';
+  static const String directedBy = 'Režisavo';
+  static const String genre = 'Žanras';
+  static const String noMovies = 'Filmų nerasta.';
+  static const String noShowings = 'Šią dieną seansų nėra';
+  static const String noResults = 'Rezultatų pagal';
+  static const String searchMovies = 'Ieškoti filmų...';
   static const String dots = '...';
   static const String dot = '.';
   static const String dash = '-';

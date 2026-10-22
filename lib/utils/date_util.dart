@@ -9,23 +9,23 @@ class DateUtil {
 
   static String getWeekDay(DateTime dt) {
     if (dt.weekday == DateTime.now().weekday) {
-      return 'Today';
+      return 'Šiandien';
     } else if (dt.weekday == DateTime.now().addDays(1).weekday) {
-      return 'Tomorrow';
+      return 'Rytoj';
     } else if (dt.weekday == 1) {
-      return 'Monday';
+      return 'Pirmadienis';
     } else if (dt.weekday == 2) {
-      return 'Tuesday';
+      return 'Antradienis';
     } else if (dt.weekday == 3) {
-      return 'Wednesday';
+      return 'Trečiadienis';
     } else if (dt.weekday == 4) {
-      return 'Thursday';
+      return 'Ketvirtadienis';
     } else if (dt.weekday == 5) {
-      return 'Friday';
+      return 'Penktadienis';
     } else if (dt.weekday == 6) {
-      return 'Saturday';
+      return 'Šeštadienis';
     } else if (dt.weekday == 7) {
-      return 'Sunday';
+      return 'Sekmadienis';
     } else {
       return '';
     }

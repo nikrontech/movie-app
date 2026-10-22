@@ -21,10 +21,15 @@ class Rating {
     }
 
     return Rating(
-      imdb: (json['imdb'] ?? json['imdbRating'])?.toString(),
-      metaScore: (json['metaScore'] ?? json['metascore'])?.toString(),
-      rottenTomatoes: rottenTomatoes,
+      imdb: _valueOrNull(json['imdb'] ?? json['imdbRating']),
+      metaScore: _valueOrNull(json['metaScore'] ?? json['metascore']),
+      rottenTomatoes: _valueOrNull(rottenTomatoes),
     );
+  }
+
+  static String? _valueOrNull(dynamic value) {
+    final text = value?.toString();
+    return text == null || text.isEmpty || text == 'N/A' ? null : text;
   }
 
   bool isEmpty() {
