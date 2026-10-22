@@ -5,6 +5,7 @@ import 'package:movie_app/conf.dart';
 import 'package:movie_app/models/film.dart';
 import 'package:movie_app/models/schedule.dart';
 import 'package:movie_app/models/showing.dart';
+import 'package:movie_app/services/location_service.dart';
 import 'package:movie_app/utils/date_util.dart';
 import 'package:sprintf/sprintf.dart';
 
@@ -37,12 +38,18 @@ class Api {
     required DateTime dateFrom,
     DateTime? dateTo,
     String? searchText,
+    String? city,
   }) async {
-    final response = await http.get(Uri.parse(getScheduleUrl(
+    var url = getScheduleUrl(
       dateFrom,
       dateTo ?? dateFrom,
       searchText ?? '',
-    )));
+    );
+    final selectedCity = city ?? LocationService.city;
+    if (selectedCity != null && selectedCity.isNotEmpty) {
+      url += '&city=${Uri.encodeQueryComponent(selectedCity)}';
+    }
+    final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
       final decoded = json.decode(utf8.decode(response.bodyBytes));
@@ -57,8 +64,13 @@ class Api {
 
   static Future<Film> fetchFilm({
     required String id,
+    String? city,
   }) async {
-    final url = '${Conf.apiUrl}/api/films/${Uri.encodeComponent(id)}';
+    var url = '${Conf.apiUrl}/api/films/${Uri.encodeComponent(id)}';
+    final selectedCity = city ?? LocationService.city;
+    if (selectedCity != null && selectedCity.isNotEmpty) {
+      url += '?city=${Uri.encodeQueryComponent(selectedCity)}';
+    }
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode != 200) {

@@ -4,6 +4,7 @@ import 'package:movie_app/app_text.dart';
 import 'package:movie_app/models/schedule.dart';
 import 'package:movie_app/pages/search_page.dart';
 import 'package:movie_app/providers/api.dart';
+import 'package:movie_app/services/location_service.dart';
 import 'package:movie_app/style.dart';
 import 'package:movie_app/widgets/film_grid.dart';
 import 'package:movie_app/widgets/sliver_search_bar.dart';
@@ -24,6 +25,12 @@ class _SchedulePageState extends State<SchedulePage> {
   void initState() {
     schedule = Api.fetchSchedule(dateFrom: DateTime.now());
     super.initState();
+    LocationService.fetchLocation().then((_) {
+      if (!mounted || LocationService.city == null) return;
+      setState(() {
+        schedule = Api.fetchSchedule(dateFrom: selectedDate);
+      });
+    });
   }
 
   @override

@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/models/film.dart';
 import 'package:movie_app/providers/api.dart';
+import 'package:movie_app/services/location_service.dart';
 import 'package:movie_app/style.dart';
 import 'package:movie_app/widgets/film_description.dart';
 import 'package:movie_app/widgets/film_rating_row.dart';
@@ -62,6 +63,11 @@ class _FilmPageState extends State<FilmPage> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadFilmForDate(selectedShowingDate);
+      LocationService.fetchLocation().then((_) {
+        if (mounted && LocationService.city != null) {
+          _loadFilmForDate(selectedShowingDate);
+        }
+      });
     });
   }
 
