@@ -76,7 +76,15 @@ class _SliverSearchBarState extends State<SliverSearchBar> {
               ),
               onPressed: () => toggle(),
             )
-          : null,
+          : showTextField
+              ? null
+              : Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Image.asset(
+                    'assets/icon.png',
+                    fit: BoxFit.contain,
+                  ),
+                ),
       title: showTextField
           ? TextField(
               controller: searchController,
