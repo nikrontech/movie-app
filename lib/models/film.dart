@@ -41,6 +41,40 @@ class Film {
     );
   }
 
+  factory Film.fromBackendJson(
+    Map<String, dynamic> json,
+    List<Showing> showings,
+  ) {
+    final rating = json['rating'];
+    final ageRating = json['ageRating'];
+    final genres = json['genres'];
+
+    return Film(
+      id: json['id'] as String? ?? '',
+      title: json['title'] as String? ?? '',
+      foreignTitle: json['originalTitle'] as String? ?? '',
+      synopsis: (json['description'] ?? json['shortDescription']) as String? ?? '',
+      runningTime: json['durationMinutes']?.toString() ?? '',
+      age: ageRating is Map<String, dynamic>
+          ? (ageRating['code'] ?? ageRating['name'])?.toString() ?? ''
+          : ageRating?.toString() ?? '',
+      year: json['releaseYear']?.toString() ?? '',
+      genre: genres is List
+          ? genres.map((genre) {
+              if (genre is Map<String, dynamic>) {
+                return genre['name']?.toString() ?? '';
+              }
+              return genre.toString();
+            }).where((genre) => genre.isNotEmpty).join(', ')
+          : '',
+      thumbnail: json['thumbnailPath'] as String? ?? '',
+      poster: json['posterPath'] as String? ?? '',
+      trailer: json['trailerPath'] as String? ?? '',
+      rating: rating is Map<String, dynamic> ? Rating.fromJson(rating) : const Rating(),
+      showings: showings,
+    );
+  }
+
   List<String> getInfoList() {
     final List<String> infoList = [];
 

@@ -2,9 +2,9 @@ import 'package:dart_date/dart_date.dart';
 
 class DateUtil {
   static String formatDate(DateTime dt) {
-    return dt.isSameDay(DateTime.now())
-        ? dt.toIso8601String()
-        : dt.setHour(0, 0, 0, 0, 0).toIso8601String();
+    String twoDigits(int value) => value.toString().padLeft(2, '0');
+
+    return '${dt.year}-${twoDigits(dt.month)}-${twoDigits(dt.day)}';
   }
 
   static String getWeekDay(DateTime dt) {

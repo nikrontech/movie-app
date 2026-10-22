@@ -12,4 +12,17 @@ class Showing {
       ticketLink: json['ticketLink'] as String? ?? '',
     );
   }
+
+  factory Showing.fromBackendJson(Map<String, dynamic> json) {
+    final start = json['startsAt'] as String?;
+    final screen = [json['screen'], json['format']]
+        .where((value) => value != null && value.toString().isNotEmpty)
+        .join(' · ');
+
+    return Showing(
+      date: start == null ? DateTime.fromMillisecondsSinceEpoch(0) : DateTime.parse(start),
+      screenType: screen,
+      ticketLink: json['bookingUrl'] as String? ?? '',
+    );
+  }
 }

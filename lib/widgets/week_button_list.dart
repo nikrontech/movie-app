@@ -46,6 +46,8 @@ class _WeekButtonListState extends State<WeekButtonList> {
               }
             },
             style: TextButton.styleFrom(
+              minimumSize: const Size(72, 48),
+              padding: const EdgeInsets.symmetric(horizontal: 8),
               backgroundColor: dateSelected.isSameDay(today.addDays(i))
                   ? Theme.of(context).colorScheme.secondary
                   : Theme.of(context).primaryColor,

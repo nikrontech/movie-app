@@ -31,26 +31,26 @@ class _SchedulePageState extends State<SchedulePage> {
     return SafeArea(
       child: Scaffold(
         bottomNavigationBar: BottomAppBar(
-          child: Container(
-            padding: const EdgeInsets.only(
-              top: Style.padding,
-            ),
-            margin: const EdgeInsets.only(
-              bottom: Style.margin,
-            ),
-            height: 50,
-            child: WeekButtonList(
-              margin: const EdgeInsets.only(
-                left: Style.margin,
-                right: Style.margin,
+          child: SafeArea(
+            top: false,
+            child: SizedBox(
+              height: 64,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 8, bottom: 8),
+                child: WeekButtonList(
+                  margin: const EdgeInsets.only(
+                    left: Style.margin,
+                    right: Style.margin,
+                  ),
+                  onChanged: (DateTime dateSelected) {
+                    setState(() {
+                      schedule = Api.fetchSchedule(
+                        dateFrom: dateSelected,
+                      );
+                    });
+                  },
+                ),
               ),
-              onChanged: (DateTime dateSelected) {
-                setState(() {
-                  schedule = Api.fetchSchedule(
-                    dateFrom: dateSelected,
-                  );
-                });
-              },
             ),
           ),
         ),
@@ -59,6 +59,21 @@ class _SchedulePageState extends State<SchedulePage> {
           child: FutureBuilder<Schedule>(
             future: schedule,
             builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(Style.padding),
+                    child: Text(
+                      'Unable to load films: ${snapshot.error}',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    ),
+                  ),
+                );
+              }
+
               if (snapshot.hasData) {
                 final List<Cinema> cinemas = snapshot.data!.cinemas;
 

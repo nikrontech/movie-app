@@ -7,9 +7,9 @@ class Rating {
 
   factory Rating.fromJson(Map<String, dynamic> json) {
     return Rating(
-      imdb: json['imdb'] as String?,
-      metaScore: json['metaScore'] as String?,
-      rottenTomatoes: json['rottenTomatoes'] as String?,
+      imdb: (json['imdb'] ?? json['imdbRating'])?.toString(),
+      metaScore: (json['metaScore'] ?? json['metascore'])?.toString(),
+      rottenTomatoes: json['rottenTomatoes']?.toString(),
     );
   }
 
