@@ -37,7 +37,7 @@ class Showing {
           ? DateTime.fromMillisecondsSinceEpoch(0)
           : DateTime.parse(start),
       cinemaName: cinema is Map<String, dynamic>
-          ? cinema['name']?.toString() ?? ''
+          ? (cinema['displayName'] ?? cinema['name'])?.toString() ?? ''
           : '',
       screenType: screenLabel,
       ticketLink: json['bookingUrl'] as String? ?? '',
