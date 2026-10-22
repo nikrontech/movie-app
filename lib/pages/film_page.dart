@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:movie_app/app_text.dart';
 import 'package:movie_app/models/film.dart';
 import 'package:movie_app/providers/api.dart';
 import 'package:movie_app/services/location_service.dart';
@@ -36,6 +37,9 @@ class _FilmPageState extends State<FilmPage> {
   late List<String> infoList;
   late DateTime selectedShowingDate;
   late Film film;
+  bool loadingShowings = false;
+  bool showingsFailed = false;
+  int showingRequest = 0;
 
   @override
   void initState() {
@@ -72,13 +76,26 @@ class _FilmPageState extends State<FilmPage> {
   }
 
   Future<void> _loadFilmForDate(DateTime date) async {
-    setState(() => selectedShowingDate = date);
+    if (!mounted) return;
+    final request = ++showingRequest;
+    setState(() {
+      selectedShowingDate = date;
+      loadingShowings = true;
+      showingsFailed = false;
+    });
     try {
       final updatedFilm = await Api.fetchFilm(id: film.id);
-      if (!mounted) return;
-      setState(() => film = updatedFilm);
+      if (!mounted || request != showingRequest) return;
+      setState(() {
+        film = updatedFilm;
+        loadingShowings = false;
+      });
     } catch (_) {
-      // Keep the current film data if the detailed request fails.
+      if (!mounted || request != showingRequest) return;
+      setState(() {
+        loadingShowings = false;
+        showingsFailed = true;
+      });
     }
   }
 
@@ -333,7 +350,21 @@ class _FilmPageState extends State<FilmPage> {
                               film: film,
                             ),
                           ),
-                          if (film.showings.isNotEmpty) ...[
+                          if (showingsFailed)
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(top: Style.padding),
+                              child: Column(children: [
+                                const Text(AppText.showingsFailed),
+                                TextButton(
+                                  onPressed: () =>
+                                      _loadFilmForDate(selectedShowingDate),
+                                  child: const Text(AppText.retry),
+                                ),
+                              ]),
+                            ),
+                          if ((!loadingShowings && !showingsFailed) ||
+                              film.showings.isNotEmpty) ...[
                             Padding(
                               padding:
                                   const EdgeInsets.only(top: Style.padding),

@@ -7,6 +7,13 @@ class DateUtil {
     return '${dt.year}-${twoDigits(dt.month)}-${twoDigits(dt.day)}';
   }
 
+  static String formatDateTime(DateTime dt) {
+    String twoDigits(int value) => value.toString().padLeft(2, '0');
+
+    return '${dt.year}-${twoDigits(dt.month)}-${twoDigits(dt.day)}'
+        'T${twoDigits(dt.hour)}:${twoDigits(dt.minute)}:${twoDigits(dt.second)}';
+  }
+
   static String getWeekDay(DateTime dt) {
     if (dt.weekday == DateTime.now().weekday) {
       return 'Šiandien';

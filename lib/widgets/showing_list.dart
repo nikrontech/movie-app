@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:movie_app/app_text.dart';
 import 'package:movie_app/models/showing.dart';
 import 'package:movie_app/style.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ShowingList extends StatelessWidget {
   final List<Showing> showings;
@@ -15,79 +16,153 @@ class ShowingList extends StatelessWidget {
     required this.selectedDate,
   }) : super(key: key);
 
+  Future<void> _openBooking(BuildContext context, Uri uri) async {
+    var opened = false;
+    try {
+      opened = await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } catch (_) {
+      // Report launch failures in the same way as an unsupported URL.
+    }
+    if (!opened && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text(AppText.bookingFailed)),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final byCinema = <String, List<Showing>>{};
-    final selectedShowings = showings
+    final selected = showings
         .where((showing) => showing.date.toLocal().isSameDay(selectedDate))
-        .toList();
-    final sortedShowings = [...selectedShowings]
-      ..sort((left, right) => left.date.compareTo(right.date));
-
-    for (final showing in sortedShowings) {
-      final cinema = showing.cinemaName.isEmpty ? 'Cinema' : showing.cinemaName;
-      byCinema.putIfAbsent(cinema, () => []).add(showing);
+        .toList()
+      ..sort((a, b) => a.date.compareTo(b.date));
+    final cinemas = <String, Map<String, List<Showing>>>{};
+    for (final showing in selected) {
+      final name = showing.cinemaName.trim();
+      cinemas
+          .putIfAbsent(name.isEmpty ? AppText.cinema : name, () => {})
+          .putIfAbsent(showing.screenType.trim(), () => [])
+          .add(showing);
     }
-
-    final secondary = Theme.of(context).colorScheme.secondary;
+    final now = DateTime.now();
+    final theme = Theme.of(context);
 
     return SizedBox(
       width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          for (int i = 0; i < byCinema.entries.length; i++) ...[
-            Padding(
-              padding: EdgeInsets.only(top: i == 0 ? 0 : Style.padding),
-              child: Text(
-                byCinema.entries.elementAt(i).key,
-                style: TextStyle(color: secondary, fontWeight: FontWeight.w500),
+          Text(AppText.showings,
+              style: theme.textTheme.titleLarge
+                  ?.copyWith(fontWeight: FontWeight.w700)),
+          const SizedBox(height: 4),
+          Text(formatDate(selectedDate, [yyyy, '-', mm, '-', dd]),
+              style:
+                  theme.textTheme.bodyMedium?.copyWith(color: Colors.black54)),
+          const SizedBox(height: 16),
+          if (cinemas.isEmpty)
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(Style.padding),
+              decoration: BoxDecoration(
+                color: const Color(0xFFF5F5F5),
+                borderRadius: BorderRadius.circular(8),
               ),
+              child: Column(children: [
+                const Icon(Icons.event_busy_outlined, size: 32),
+                const SizedBox(height: 12),
+                Text(AppText.noShowings, style: theme.textTheme.titleMedium),
+                const SizedBox(height: 8),
+                const Text(AppText.chooseAnotherDay,
+                    textAlign: TextAlign.center),
+              ]),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8),
-              child: Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: byCinema.entries
-                    .elementAt(i)
-                    .value
-                    .map((showing) => Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 14,
-                            vertical: 10,
-                          ),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: secondary),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Text(
-                            formatDate(showing.date.toLocal(), [HH, ':', nn]),
-                            style: TextStyle(color: secondary),
-                          ),
-                        ))
-                    .toList(),
+          for (final cinema in cinemas.entries)
+            Container(
+              width: double.infinity,
+              margin: const EdgeInsets.only(bottom: 12),
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                border: Border.all(color: const Color(0xFFE0E0E0)),
+                borderRadius: BorderRadius.circular(8),
               ),
-            ),
-          ],
-        if (byCinema.isEmpty)
-          Padding(
-            padding: const EdgeInsets.only(top: Style.padding * 2),
-            child: Center(
               child: Column(
-                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(Icons.event_busy, size: Style.iconSize, color: secondary),
-                  const SizedBox(height: Style.padding),
-                  Text(
-                    AppText.noShowings,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: secondary),
-                  ),
+                  Text(cinema.key,
+                      style: theme.textTheme.titleMedium
+                          ?.copyWith(fontWeight: FontWeight.w700)),
+                  for (final format in cinema.value.entries) ...[
+                    const SizedBox(height: 12),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: format.value.map((showing) {
+                        final time =
+                            formatDate(showing.date.toLocal(), [HH, ':', nn]);
+                        final started = showing.date.isBefore(now);
+                        final uri = Uri.tryParse(showing.ticketLink.trim());
+                        final canBook = !started &&
+                            uri != null &&
+                            (uri.scheme == 'https' || uri.scheme == 'http') &&
+                            uri.host.isNotEmpty;
+                        final label = Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(time,
+                                style: const TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.w600)),
+                          ],
+                        );
+                        if (canBook && uri != null) {
+                          return OutlinedButton(
+                            onPressed: () => _openBooking(context, uri),
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: Colors.black,
+                              minimumSize: const Size(96, 48),
+                              fixedSize: const Size(96, 48),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 6),
+                              side: const BorderSide(color: Colors.black54),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8)),
+                            ),
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    label,
+                                    const SizedBox(width: 6),
+                                    const Icon(Icons.open_in_new, size: 14),
+                                  ]),
+                            ),
+                          );
+                        }
+                        return SizedBox(
+                          width: 96,
+                          height: 48,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFF5F5F5),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: DefaultTextStyle.merge(
+                              style: TextStyle(
+                                  color:
+                                      started ? Colors.black54 : Colors.black),
+                              child: label,
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ],
                 ],
               ),
             ),
-          ),
         ],
       ),
     );

@@ -1,4 +1,10 @@
 class AppText {
+  static const String showings = 'Seansai';
+  static const String cinema = 'Kino teatras';
+  static const String bookingFailed = 'Nepavyko atidaryti bilietų puslapio.';
+  static const String showingsFailed = 'Nepavyko atnaujinti seansų.';
+  static const String retry = 'Bandyti dar kartą';
+  static const String chooseAnotherDay = 'Pasirinkite kitą dieną apačioje.';
   static const String starring = 'Vaidina';
   static const String directedBy = 'Režisavo';
   static const String genre = 'Žanras';

@@ -14,8 +14,8 @@ class Api {
       DateTime dateFrom, DateTime dateTo, String title) {
     return sprintf(Conf.getScheduleUrl, [
       Conf.apiUrl,
-      DateUtil.formatDate(dateFrom),
-      DateUtil.formatDate(dateTo),
+      DateUtil.formatDateTime(dateFrom),
+      DateUtil.formatDateTime(dateTo),
       title
     ]);
   }
@@ -40,9 +40,20 @@ class Api {
     String? searchText,
     String? city,
   }) async {
+    final effectiveDateFrom = _startOfRequestedDay(dateFrom);
+    final effectiveDateTo = dateTo ??
+        DateTime(
+          effectiveDateFrom.year,
+          effectiveDateFrom.month,
+          effectiveDateFrom.day,
+          23,
+          59,
+          59,
+          999,
+        );
     var url = getScheduleUrl(
-      dateFrom,
-      dateTo ?? dateFrom,
+      effectiveDateFrom,
+      effectiveDateTo,
       searchText ?? '',
     );
     final selectedCity = city ?? LocationService.city;
@@ -60,6 +71,14 @@ class Api {
     }
 
     throw Exception('Failed to fetch schedule');
+  }
+
+  static DateTime _startOfRequestedDay(DateTime date) {
+    final now = DateTime.now();
+    final isToday =
+        date.year == now.year && date.month == now.month && date.day == now.day;
+
+    return isToday ? date : DateTime(date.year, date.month, date.day);
   }
 
   static Future<Film> fetchFilm({
