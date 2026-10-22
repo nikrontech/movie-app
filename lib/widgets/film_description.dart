@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/app_text.dart';
 import 'package:movie_app/models/film.dart';
+import 'package:movie_app/utils/html_text.dart';
 
 class FilmDescription extends StatefulWidget {
   final Film film;
@@ -25,7 +26,7 @@ class _FilmDescriptionState extends State<FilmDescription> {
       child: AutoSizeText.rich(
         TextSpan(
           children: <TextSpan>[
-            TextSpan(text: film.synopsis ?? AppText.dots),
+            synopsisSpan(film.synopsis),
             if (film.cast.isNotEmpty) ...[
               const TextSpan(
                 text: '\n\n${AppText.starring} ',
@@ -56,7 +57,7 @@ class _FilmDescriptionState extends State<FilmDescription> {
                     color: Theme.of(context).colorScheme.secondary,
                   ),
                   children: <TextSpan>[
-                    TextSpan(text: film.synopsis ?? AppText.dots),
+                    synopsisSpan(film.synopsis),
                     if (showFullDescription) ...[
                       if (film.genre.isNotEmpty) ...[
                         const TextSpan(
