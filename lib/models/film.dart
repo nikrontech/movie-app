@@ -91,14 +91,19 @@ class Film {
               .where((genre) => genre.isNotEmpty)
               .join(', ')
           : '',
-      thumbnail: json['thumbnailPath'] as String? ?? '',
-      poster: json['posterPath'] as String? ?? '',
+      thumbnail: _firstNonEmpty(json['thumbnailPath'], json['posterPath']),
+      poster: _firstNonEmpty(json['posterPath'], json['thumbnailPath']),
       trailer: json['trailerPath'] as String? ?? '',
       rating: rating is Map<String, dynamic>
           ? Rating.fromJson(rating)
           : const Rating(),
       showings: showings,
     );
+  }
+
+  static String _firstNonEmpty(dynamic primary, dynamic fallback) {
+    final first = primary?.toString() ?? '';
+    return first.isNotEmpty ? first : fallback?.toString() ?? '';
   }
 
   List<String> getInfoList() {

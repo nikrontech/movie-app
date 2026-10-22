@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:dart_date/dart_date.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie_app/conf.dart';
 import 'package:movie_app/models/film.dart';
@@ -41,7 +40,7 @@ class Api {
   }) async {
     final response = await http.get(Uri.parse(getScheduleUrl(
       dateFrom,
-      dateTo ?? dateFrom.addDays(1),
+      dateTo ?? dateFrom,
       searchText ?? '',
     )));
 

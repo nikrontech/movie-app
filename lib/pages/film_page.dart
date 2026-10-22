@@ -110,11 +110,11 @@ class _FilmPageState extends State<FilmPage> {
                     flexibleSpace: Stack(
                       fit: StackFit.expand,
                       children: <Widget>[
-                        if (widget.film.poster.isNotEmpty) ...[
-                          SizedBox(
-                            height: widget.appBarHeight,
-                            child: CachedNetworkImage(
-                              imageUrl: Api.getImageUrl(widget.film.poster),
+                      if (widget.film.thumbnail.isNotEmpty) ...[
+                        SizedBox(
+                          height: widget.appBarHeight,
+                          child: CachedNetworkImage(
+                            imageUrl: Api.getImageUrl(widget.film.thumbnail),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -202,9 +202,9 @@ class _FilmPageState extends State<FilmPage> {
                                       SizedBox(
                                         width: 120,
                                         height: 180,
-                                        child: Thumbnail(
-                                          filename: widget.film.thumbnail,
-                                        ),
+                                      child: Thumbnail(
+                                        filename: widget.film.poster,
+                                      ),
                                       ),
                                       Column(
                                         children: <Widget>[
