@@ -104,7 +104,7 @@ class _SearchPageState extends State<SearchPage> {
                                             .colorScheme
                                             .secondary,
                                       ),
-                                      text: AppText.dot,
+                                       text: AppText.noResultsSuffix,
                                     ),
                                   ],
                                 ),
