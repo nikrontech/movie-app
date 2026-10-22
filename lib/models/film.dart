@@ -75,7 +75,9 @@ class Film {
       synopsis: shortDescription.isNotEmpty ? shortDescription : description,
       director: json['director'] as String? ?? '',
       cast: json['cast'] as String? ?? '',
-      runningTime: json['durationMinutes']?.toString() ?? '',
+      runningTime: json['durationMinutes'] == null
+          ? ''
+          : '${json['durationMinutes']} min',
       age: ageRating is Map<String, dynamic>
           ? (ageRating['code'] ?? ageRating['name'])?.toString() ?? ''
           : ageRating?.toString() ?? '',
