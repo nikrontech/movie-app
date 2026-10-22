@@ -14,8 +14,8 @@ class CinemaList extends StatelessWidget {
   final bool showTitle;
 
   const CinemaList({
-    Key key,
-    @required this.cinema,
+    Key? key,
+    required this.cinema,
     this.showRating = false,
     this.showShowingTime = false,
     this.showTitle = false,

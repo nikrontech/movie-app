@@ -11,14 +11,14 @@ import 'package:movie_app/widgets/sliver_search_bar.dart';
 import 'package:movie_app/widgets/week_button_list.dart';
 
 class SchedulePage extends StatefulWidget {
-  const SchedulePage({Key key}) : super(key: key);
+  const SchedulePage({Key? key}) : super(key: key);
 
   @override
   _SchedulePageState createState() => _SchedulePageState();
 }
 
 class _SchedulePageState extends State<SchedulePage> {
-  Future<Schedule> schedule;
+  late Future<Schedule> schedule;
 
   @override
   void initState() {
@@ -60,7 +60,7 @@ class _SchedulePageState extends State<SchedulePage> {
             future: schedule,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                final List<Cinema> cinemas = snapshot.data.cinemas;
+                final List<Cinema> cinemas = snapshot.data!.cinemas;
 
                 return CustomScrollView(
                   physics: const ClampingScrollPhysics(),

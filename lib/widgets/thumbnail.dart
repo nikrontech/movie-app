@@ -8,8 +8,8 @@ class Thumbnail extends StatelessWidget {
   final double border;
 
   const Thumbnail({
-    Key key,
-    @required this.filename,
+    Key? key,
+    required this.filename,
     this.border = Style.border,
   }) : super(key: key);
 

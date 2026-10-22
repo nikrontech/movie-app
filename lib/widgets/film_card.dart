@@ -14,8 +14,8 @@ class FilmCard extends StatelessWidget {
   final bool showTitle;
 
   const FilmCard({
-    Key key,
-    @required this.film,
+    Key? key,
+    required this.film,
     this.border = Style.border,
     this.showRating = false,
     this.showShowingTime = false,
@@ -95,7 +95,7 @@ class FilmCard extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                film.rating.imdb,
+                                 film.rating.imdb ?? '',
                                 style: TextStyle(
                                   color: Theme.of(context).colorScheme.secondary,
                                 ),

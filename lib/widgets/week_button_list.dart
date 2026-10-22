@@ -6,7 +6,7 @@ class WeekButtonList extends StatefulWidget {
   final EdgeInsets margin;
   final Function(DateTime dateSelected) onChanged;
 
-  const WeekButtonList({Key key, this.margin, @required this.onChanged})
+  const WeekButtonList({Key? key, this.margin = EdgeInsets.zero, required this.onChanged})
       : super(key: key);
 
   @override
@@ -14,8 +14,8 @@ class WeekButtonList extends StatefulWidget {
 }
 
 class _WeekButtonListState extends State<WeekButtonList> {
-  DateTime today;
-  DateTime dateSelected;
+  late DateTime today;
+  late DateTime dateSelected;
 
   @override
   void initState() {

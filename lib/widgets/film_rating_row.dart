@@ -7,7 +7,7 @@ import 'package:movie_app/style.dart';
 class FilmRatingRow extends StatelessWidget {
   final Rating rating;
 
-  const FilmRatingRow({Key key, @required this.rating}) : super(key: key);
+  const FilmRatingRow({Key? key, required this.rating}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

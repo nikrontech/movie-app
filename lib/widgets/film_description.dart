@@ -6,7 +6,7 @@ import 'package:movie_app/models/film.dart';
 class FilmDescription extends StatefulWidget {
   final Film film;
 
-  const FilmDescription({Key key, @required this.film}) : super(key: key);
+  const FilmDescription({Key? key, required this.film}) : super(key: key);
 
   @override
   _FilmDescriptionState createState() => _FilmDescriptionState(film);

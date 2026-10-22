@@ -14,7 +14,7 @@ class FilmPage extends StatefulWidget {
   final Film film;
   final double appBarHeight;
 
-  const FilmPage({Key key, @required this.film, this.appBarHeight = 250})
+  const FilmPage({Key? key, required this.film, this.appBarHeight = 250})
       : super(key: key);
 
   @override
@@ -22,11 +22,11 @@ class FilmPage extends StatefulWidget {
 }
 
 class _FilmPageState extends State<FilmPage> {
-  VideoPlayer videoPlayer;
-  ScrollController scrollController;
-  ScrollController headerScrollController;
+  VideoPlayer? videoPlayer;
+  late ScrollController scrollController;
+  late ScrollController headerScrollController;
   bool isAppBarTransparent = false;
-  List infoList;
+  late List<String> infoList;
 
   @override
   void initState() {
@@ -158,7 +158,7 @@ class _FilmPageState extends State<FilmPage> {
                                           const Icon(Icons.play_circle_filled),
                                       color: Colors.white54,
                                       iconSize: 70,
-                                      onPressed: () => videoPlayer.play(),
+                                       onPressed: () => videoPlayer!.play(),
                                     ),
                                   ),
                                 ),
@@ -300,7 +300,7 @@ class _FilmPageState extends State<FilmPage> {
               Visibility(
                 maintainState: true,
                 visible: false,
-                child: videoPlayer,
+                 child: videoPlayer!,
               ),
             ],
           ],

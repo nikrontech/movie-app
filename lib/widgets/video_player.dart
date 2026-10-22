@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:video_player/video_player.dart';
 
-VideoPlayerController videoPlayerController;
-ChewieController chewieController;
-bool isInitialized;
+late VideoPlayerController videoPlayerController;
+late ChewieController chewieController;
+late bool isInitialized;
 
 class VideoPlayer extends StatefulWidget {
   final String url;
 
-  const VideoPlayer({Key key, @required this.url}) : super(key: key);
+  const VideoPlayer({Key? key, required this.url}) : super(key: key);
 
   @override
   _VideoPlayerState createState() => _VideoPlayerState();

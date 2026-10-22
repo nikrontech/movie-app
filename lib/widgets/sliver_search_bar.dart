@@ -9,8 +9,8 @@ class SliverSearchBar extends StatefulWidget {
   final bool alwaysOpen;
 
   const SliverSearchBar({
-    Key key,
-    @required this.onSubmitted,
+    Key? key,
+    required this.onSubmitted,
     this.autofocus = true,
     this.placeholder = "",
     this.alwaysOpen = false,
@@ -21,11 +21,11 @@ class SliverSearchBar extends StatefulWidget {
 }
 
 class _SliverSearchBarState extends State<SliverSearchBar> {
-  TextEditingController searchController;
-  bool showTextField;
-  bool showSearchIcon;
-  bool showClearIcon;
-  bool showBackButton;
+  late TextEditingController searchController;
+  late bool showTextField;
+  late bool showSearchIcon;
+  late bool showClearIcon;
+  late bool showBackButton;
 
   @override
   void initState() {

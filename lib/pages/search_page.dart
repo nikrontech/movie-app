@@ -13,9 +13,9 @@ class SearchPage extends StatefulWidget {
   final String searchText;
 
   const SearchPage({
-    Key key,
-    @required this.schedule,
-    @required this.searchText,
+    Key? key,
+    required this.schedule,
+    required this.searchText,
   }) : super(key: key);
 
   @override
@@ -23,8 +23,8 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  Future<Schedule> schedule;
-  String searchText;
+  late Future<Schedule> schedule;
+  late String searchText;
 
   _SearchPageState(this.schedule, this.searchText);
 
@@ -37,7 +37,7 @@ class _SearchPageState extends State<SearchPage> {
           future: schedule,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              final List<Cinema> cinemas = snapshot.data.cinemas;
+              final List<Cinema> cinemas = snapshot.data!.cinemas;
 
               return CustomScrollView(
                 physics: const ClampingScrollPhysics(),

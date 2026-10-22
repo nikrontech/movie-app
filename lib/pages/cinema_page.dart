@@ -8,7 +8,7 @@ class CinemaPage extends StatelessWidget {
   final Future<Schedule> schedule;
   final String title;
 
-  const CinemaPage({Key key, @required this.title, @required this.schedule})
+  const CinemaPage({Key? key, required this.title, required this.schedule})
       : super(key: key);
 
   @override
@@ -20,7 +20,7 @@ class CinemaPage extends StatelessWidget {
           future: schedule,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              final Cinema cinema = snapshot.data.cinemas
+              final Cinema cinema = snapshot.data!.cinemas
                   .firstWhere((element) => element.name == title);
 
               return CustomScrollView(

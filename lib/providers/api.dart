@@ -34,18 +34,18 @@ class Api {
   }
 
   static Future<Schedule> fetchSchedule({
-    @required DateTime dateFrom,
-    DateTime dateTo,
-    String searchText,
+    required DateTime dateFrom,
+    DateTime? dateTo,
+    String? searchText,
   }) async {
     final response = await http.get(
       Uri.parse(
-        getScheduleUrl(dateFrom, dateTo ?? dateFrom.addDays(1), searchText),
+        getScheduleUrl(dateFrom, dateTo ?? dateFrom.addDays(1), searchText ?? ''),
       ),
     );
 
     if (response.statusCode == 200) {
-      return Schedule.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+      return Schedule.fromJson(json.decode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>);
     }
 
     throw Exception('Failed to fetch schedule');

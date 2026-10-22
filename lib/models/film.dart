@@ -19,45 +19,30 @@ class Film {
   final List<Showing> showings;
 
   Film({
-    this.id,
-    this.title,
-    this.foreignTitle,
-    this.synopsis,
-    this.director,
-    this.cast,
-    this.runningTime,
-    this.age,
-    this.year,
-    this.thumbnail,
-    this.poster,
-    this.trailer,
-    this.genre,
-    this.rating,
-    this.showings,
+    this.id = '', this.title = '', this.foreignTitle = '', this.synopsis = '',
+    this.director = '', this.cast = '', this.runningTime = '', this.age = '',
+    this.year = '', this.thumbnail = '', this.poster = '', this.trailer = '',
+    this.genre = '', this.rating = const Rating(), this.showings = const [],
   });
 
   factory Film.fromJson(Map<String, dynamic> json) {
     return Film(
-      id: json['id'],
-      title: json['title'],
-      foreignTitle: json['foreignTitle'],
-      synopsis: json['synopsis'],
-      director: json['director'],
-      cast: json['cast'],
-      runningTime: json['runningTime'],
-      age: json['age'],
-      year: json['year'],
-      thumbnail: json['thumbnail'],
-      poster: json['poster'],
-      trailer: json['trailer'],
-      genre: json['genre'],
-      rating: Rating.fromJson(json['rating']),
-      showings: json['showings'].map<Showing>((i) => Showing.fromJson(i)).toList(),
+      id: json['id'] as String? ?? '', title: json['title'] as String? ?? '',
+      foreignTitle: json['foreignTitle'] as String? ?? '',
+      synopsis: json['synopsis'] as String? ?? '',
+      director: json['director'] as String? ?? '', cast: json['cast'] as String? ?? '',
+      runningTime: json['runningTime'] as String? ?? '', age: json['age'] as String? ?? '',
+      year: json['year'] as String? ?? '', thumbnail: json['thumbnail'] as String? ?? '',
+      poster: json['poster'] as String? ?? '', trailer: json['trailer'] as String? ?? '',
+      genre: json['genre'] as String? ?? '',
+      rating: Rating.fromJson(json['rating'] as Map<String, dynamic>),
+      showings: (json['showings'] as List<dynamic>)
+          .map<Showing>((i) => Showing.fromJson(i as Map<String, dynamic>)).toList(),
     );
   }
 
-  List getInfoList() {
-    final List infoList = [];
+  List<String> getInfoList() {
+    final List<String> infoList = [];
 
     if (year != null) infoList.add(year);
     if (runningTime != null) infoList.add(runningTime);
