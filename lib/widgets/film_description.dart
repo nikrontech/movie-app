@@ -18,10 +18,6 @@ class _FilmDescriptionState extends State<FilmDescription> {
 
   _FilmDescriptionState(this.film);
 
-  bool isFirstText(String text) {
-    return true;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Align(
@@ -29,24 +25,18 @@ class _FilmDescriptionState extends State<FilmDescription> {
       child: AutoSizeText.rich(
         TextSpan(
           children: <TextSpan>[
-            TextSpan(
-              text: film.synopsis ?? AppText.dots,
-            ),
+            TextSpan(text: film.synopsis ?? AppText.dots),
             if (film.cast.isNotEmpty) ...[
               const TextSpan(
                 text: '\n\n${AppText.starring} ',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
               TextSpan(text: film.cast),
             ],
             if (film.director.isNotEmpty) ...[
               const TextSpan(
                 text: '\n\n${AppText.directedBy} ',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
               TextSpan(text: film.director),
             ],
@@ -66,34 +56,26 @@ class _FilmDescriptionState extends State<FilmDescription> {
                     color: Theme.of(context).colorScheme.secondary,
                   ),
                   children: <TextSpan>[
-                    TextSpan(
-                      text: film.synopsis ?? AppText.dots,
-                    ),
+                    TextSpan(text: film.synopsis ?? AppText.dots),
                     if (showFullDescription) ...[
                       if (film.genre.isNotEmpty) ...[
                         const TextSpan(
                           text: '\n\n${AppText.genre} ',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         TextSpan(text: film.genre),
                       ],
                       if (film.cast.isNotEmpty) ...[
                         const TextSpan(
                           text: '\n\n${AppText.starring} ',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         TextSpan(text: film.cast),
                       ],
                       if (film.director.isNotEmpty) ...[
                         const TextSpan(
                           text: '\n\n${AppText.directedBy} ',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         TextSpan(text: film.director),
                       ],

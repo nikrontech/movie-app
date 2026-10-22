@@ -12,6 +12,7 @@ class FilmCard extends StatelessWidget {
   final bool showRating;
   final bool showShowingTime;
   final bool showTitle;
+  final DateTime? selectedDate;
 
   const FilmCard({
     Key? key,
@@ -20,6 +21,7 @@ class FilmCard extends StatelessWidget {
     this.showRating = false,
     this.showShowingTime = false,
     this.showTitle = false,
+    this.selectedDate,
   }) : super(key: key);
 
   @override
@@ -41,6 +43,7 @@ class FilmCard extends StatelessWidget {
             MaterialPageRoute(
               builder: (BuildContext context) => FilmPage(
                 film: film,
+                selectedDate: selectedDate,
               ),
             ),
           );
@@ -95,9 +98,10 @@ class FilmCard extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                 film.rating.imdb ?? '',
+                                film.rating.imdb ?? '',
                                 style: TextStyle(
-                                  color: Theme.of(context).colorScheme.secondary,
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
                                 ),
                               ),
                             ],
@@ -108,7 +112,8 @@ class FilmCard extends StatelessWidget {
                                   [HH, ':', nn],
                                 ),
                                 style: TextStyle(
-                                  color: Theme.of(context).colorScheme.secondary,
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
                                   fontWeight: FontWeight.w300,
                                 ),
                               ),

@@ -1,12 +1,11 @@
 import 'package:dart_date/dart_date.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/app_text.dart';
-import 'package:movie_app/models/cinema.dart';
 import 'package:movie_app/models/schedule.dart';
 import 'package:movie_app/pages/search_page.dart';
 import 'package:movie_app/providers/api.dart';
 import 'package:movie_app/style.dart';
-import 'package:movie_app/widgets/cinema_list.dart';
+import 'package:movie_app/widgets/film_grid.dart';
 import 'package:movie_app/widgets/sliver_search_bar.dart';
 import 'package:movie_app/widgets/week_button_list.dart';
 
@@ -19,6 +18,7 @@ class SchedulePage extends StatefulWidget {
 
 class _SchedulePageState extends State<SchedulePage> {
   late Future<Schedule> schedule;
+  DateTime selectedDate = DateTime.now();
 
   @override
   void initState() {
@@ -38,12 +38,14 @@ class _SchedulePageState extends State<SchedulePage> {
               child: Padding(
                 padding: const EdgeInsets.only(top: 8, bottom: 8),
                 child: WeekButtonList(
+                  initialDate: selectedDate,
                   margin: const EdgeInsets.only(
                     left: Style.margin,
                     right: Style.margin,
                   ),
                   onChanged: (DateTime dateSelected) {
                     setState(() {
+                      selectedDate = dateSelected;
                       schedule = Api.fetchSchedule(
                         dateFrom: dateSelected,
                       );
@@ -75,7 +77,7 @@ class _SchedulePageState extends State<SchedulePage> {
               }
 
               if (snapshot.hasData) {
-                final List<Cinema> cinemas = snapshot.data!.cinemas;
+                final films = snapshot.data!.films;
 
                 return CustomScrollView(
                   physics: const ClampingScrollPhysics(),
@@ -102,13 +104,8 @@ class _SchedulePageState extends State<SchedulePage> {
                         top: Style.padding,
                       ),
                     ),
-                    if (cinemas.isNotEmpty) ...[
-                      for (Cinema cinema in cinemas) ...[
-                        CinemaList(
-                          cinema: cinema,
-                          showShowingTime: true,
-                        )
-                      ],
+                    if (films.isNotEmpty) ...[
+                      FilmGrid(films: films, selectedDate: selectedDate),
                     ] else ...[
                       SliverFillRemaining(
                         child: Padding(
