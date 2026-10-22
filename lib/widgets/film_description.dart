@@ -32,7 +32,7 @@ class _FilmDescriptionState extends State<FilmDescription> {
             TextSpan(
               text: film.synopsis ?? AppText.dots,
             ),
-            if (film.cast != null) ...[
+            if (film.cast.isNotEmpty) ...[
               const TextSpan(
                 text: '\n\n${AppText.starring} ',
                 style: TextStyle(
@@ -41,7 +41,7 @@ class _FilmDescriptionState extends State<FilmDescription> {
               ),
               TextSpan(text: film.cast),
             ],
-            if (film.director != null) ...[
+            if (film.director.isNotEmpty) ...[
               const TextSpan(
                 text: '\n\n${AppText.directedBy} ',
                 style: TextStyle(
@@ -70,7 +70,7 @@ class _FilmDescriptionState extends State<FilmDescription> {
                       text: film.synopsis ?? AppText.dots,
                     ),
                     if (showFullDescription) ...[
-                      if (film.genre != null) ...[
+                      if (film.genre.isNotEmpty) ...[
                         const TextSpan(
                           text: '\n\n${AppText.genre} ',
                           style: TextStyle(
@@ -79,7 +79,7 @@ class _FilmDescriptionState extends State<FilmDescription> {
                         ),
                         TextSpan(text: film.genre),
                       ],
-                      if (film.cast != null) ...[
+                      if (film.cast.isNotEmpty) ...[
                         const TextSpan(
                           text: '\n\n${AppText.starring} ',
                           style: TextStyle(
@@ -88,7 +88,7 @@ class _FilmDescriptionState extends State<FilmDescription> {
                         ),
                         TextSpan(text: film.cast),
                       ],
-                      if (film.director != null) ...[
+                      if (film.director.isNotEmpty) ...[
                         const TextSpan(
                           text: '\n\n${AppText.directedBy} ',
                           style: TextStyle(

@@ -53,7 +53,9 @@ class Film {
       id: json['id'] as String? ?? '',
       title: json['title'] as String? ?? '',
       foreignTitle: json['originalTitle'] as String? ?? '',
-      synopsis: (json['description'] ?? json['shortDescription']) as String? ?? '',
+       synopsis: (json['description'] ?? json['shortDescription']) as String? ?? '',
+       director: json['director'] as String? ?? '',
+       cast: json['cast'] as String? ?? '',
       runningTime: json['durationMinutes']?.toString() ?? '',
       age: ageRating is Map<String, dynamic>
           ? (ageRating['code'] ?? ageRating['name'])?.toString() ?? ''
