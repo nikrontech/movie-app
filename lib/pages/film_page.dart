@@ -34,12 +34,14 @@ class _FilmPageState extends State<FilmPage> {
   bool isAppBarTransparent = false;
   late List<String> infoList;
   late DateTime selectedShowingDate;
+  late Film film;
 
   @override
   void initState() {
+    film = widget.film;
     selectedShowingDate = widget.selectedDate ?? DateTime.now();
-    videoPlayer = widget.film.trailer.isNotEmpty
-        ? VideoPlayer(url: Api.getVideoUrl(widget.film.trailer))
+    videoPlayer = film.trailer.isNotEmpty
+        ? VideoPlayer(url: Api.getVideoUrl(film.trailer))
         : null;
     scrollController = ScrollController();
     headerScrollController = ScrollController();
@@ -55,9 +57,23 @@ class _FilmPageState extends State<FilmPage> {
       }
     });
 
-    infoList = widget.film.getInfoList();
+    infoList = film.getInfoList();
 
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadFilmForDate(selectedShowingDate);
+    });
+  }
+
+  Future<void> _loadFilmForDate(DateTime date) async {
+    setState(() => selectedShowingDate = date);
+    try {
+      final updatedFilm = await Api.fetchFilm(id: film.id);
+      if (!mounted) return;
+      setState(() => film = updatedFilm);
+    } catch (_) {
+      // Keep the current film data if the detailed request fails.
+    }
   }
 
   @override
@@ -85,7 +101,7 @@ class _FilmPageState extends State<FilmPage> {
                     right: Style.margin,
                   ),
                   onChanged: (date) {
-                    setState(() => selectedShowingDate = date);
+                    _loadFilmForDate(date);
                   },
                 ),
               ),
@@ -110,11 +126,11 @@ class _FilmPageState extends State<FilmPage> {
                     flexibleSpace: Stack(
                       fit: StackFit.expand,
                       children: <Widget>[
-                      if (widget.film.thumbnail.isNotEmpty) ...[
-                        SizedBox(
-                          height: widget.appBarHeight,
-                          child: CachedNetworkImage(
-                            imageUrl: Api.getImageUrl(widget.film.thumbnail),
+                        if (film.thumbnail.isNotEmpty) ...[
+                          SizedBox(
+                            height: widget.appBarHeight,
+                            child: CachedNetworkImage(
+                              imageUrl: Api.getImageUrl(film.thumbnail),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -202,9 +218,9 @@ class _FilmPageState extends State<FilmPage> {
                                       SizedBox(
                                         width: 120,
                                         height: 180,
-                                      child: Thumbnail(
-                                        filename: widget.film.poster,
-                                      ),
+                                        child: Thumbnail(
+                                          filename: film.poster,
+                                        ),
                                       ),
                                       Column(
                                         children: <Widget>[
@@ -225,7 +241,7 @@ class _FilmPageState extends State<FilmPage> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 AutoSizeText(
-                                                  widget.film.title,
+                                                  film.title,
                                                   style: TextStyle(
                                                     fontWeight: FontWeight.w500,
                                                     color: Theme.of(context)
@@ -238,10 +254,10 @@ class _FilmPageState extends State<FilmPage> {
                                                     (i) => 20.0 - i,
                                                   ),
                                                 ),
-                                                if (widget.film.foreignTitle !=
+                                                if (film.foreignTitle !=
                                                     null) ...[
                                                   AutoSizeText(
-                                                    widget.film.foreignTitle,
+                                                    film.foreignTitle,
                                                     style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.w300,
@@ -290,7 +306,7 @@ class _FilmPageState extends State<FilmPage> {
                                                   ),
                                                 ],
                                                 FilmRatingRow(
-                                                  rating: widget.film.rating,
+                                                  rating: film.rating,
                                                 ),
                                               ],
                                             ),
@@ -308,15 +324,15 @@ class _FilmPageState extends State<FilmPage> {
                               top: Style.padding,
                             ),
                             child: FilmDescription(
-                              film: widget.film,
+                              film: film,
                             ),
                           ),
-                          if (widget.film.showings.isNotEmpty) ...[
+                          if (film.showings.isNotEmpty) ...[
                             Padding(
                               padding:
                                   const EdgeInsets.only(top: Style.padding),
                               child: ShowingList(
-                                showings: widget.film.showings,
+                                showings: film.showings,
                                 selectedDate: selectedShowingDate,
                               ),
                             ),

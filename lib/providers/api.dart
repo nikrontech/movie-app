@@ -55,6 +55,25 @@ class Api {
     throw Exception('Failed to fetch schedule');
   }
 
+  static Future<Film> fetchFilm({
+    required String id,
+  }) async {
+    final url = '${Conf.apiUrl}/api/films/${Uri.encodeComponent(id)}';
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to fetch film');
+    }
+
+    final filmJson =
+        json.decode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
+    final screenings = (filmJson['screenings'] as List? ?? [])
+        .whereType<Map<String, dynamic>>()
+        .map((screening) => Showing.fromBackendJson(screening))
+        .toList();
+    return Film.fromBackendJson(filmJson, screenings);
+  }
+
   static Schedule _toSchedule(List<Map<String, dynamic>> films) {
     final scheduleFilms = <Film>[];
 
