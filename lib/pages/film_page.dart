@@ -30,7 +30,7 @@ class _FilmPageState extends State<FilmPage> {
 
   @override
   void initState() {
-    videoPlayer = widget.film.trailer != null
+    videoPlayer = widget.film.trailer.isNotEmpty
         ? VideoPlayer(url: Api.getVideoUrl(widget.film.trailer))
         : null;
     scrollController = ScrollController();
@@ -80,7 +80,7 @@ class _FilmPageState extends State<FilmPage> {
                   flexibleSpace: Stack(
                     fit: StackFit.expand,
                     children: <Widget>[
-                      if (widget.film.poster != null) ...[
+                      if (widget.film.poster.isNotEmpty) ...[
                         SizedBox(
                           height: widget.appBarHeight,
                           child: CachedNetworkImage(

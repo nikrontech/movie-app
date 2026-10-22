@@ -17,7 +17,7 @@ class Thumbnail extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.all(Radius.circular(border)),
-      child: filename != null
+      child: filename.isNotEmpty
           ? CachedNetworkImage(
               imageUrl: Api.getImageUrl(filename),
               fit: BoxFit.fill,
