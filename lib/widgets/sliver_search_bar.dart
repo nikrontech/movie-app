@@ -4,6 +4,8 @@ import 'package:movie_app/app_text.dart';
 
 class SliverSearchBar extends StatefulWidget {
   final Function(String searchText) onSubmitted;
+  final Function(String searchText)? onChanged;
+  final VoidCallback? onBackPressed;
   final bool autofocus;
   final String placeholder;
   final bool alwaysOpen;
@@ -11,6 +13,8 @@ class SliverSearchBar extends StatefulWidget {
   const SliverSearchBar({
     Key? key,
     required this.onSubmitted,
+    this.onChanged,
+    this.onBackPressed,
     this.autofocus = true,
     this.placeholder = "",
     this.alwaysOpen = false,
@@ -74,7 +78,7 @@ class _SliverSearchBarState extends State<SliverSearchBar> {
                     : Icons.arrow_back,
                 color: Theme.of(context).primaryColor,
               ),
-              onPressed: () => toggle(),
+              onPressed: widget.onBackPressed ?? toggle,
             )
           : showTextField
               ? null
@@ -108,6 +112,7 @@ class _SliverSearchBarState extends State<SliverSearchBar> {
                   widget.onSubmitted(searchText);
                 }
               },
+              onChanged: widget.onChanged,
               onTap: () {
                 if (widget.alwaysOpen) {
                   setState(() {

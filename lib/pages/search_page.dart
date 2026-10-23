@@ -42,16 +42,9 @@ class _SearchPageState extends State<SearchPage> {
                 physics: const ClampingScrollPhysics(),
                 slivers: <Widget>[
                   SliverSearchBar(
-                    onSubmitted: (String searchText) {
-                      setState(() {
-                        schedule = Api.fetchSchedule(
-                          dateFrom: DateTime.now(),
-                          dateTo: DateTime.now().addDays(7).endOfDay,
-                          searchText: searchText,
-                        );
-                        this.searchText = searchText;
-                      });
-                    },
+                    onBackPressed: () => Navigator.of(context).pop(),
+                    onChanged: _fetchResults,
+                    onSubmitted: _fetchResults,
                     autofocus: false,
                     placeholder: searchText,
                     alwaysOpen: true,
@@ -104,7 +97,7 @@ class _SearchPageState extends State<SearchPage> {
                                             .colorScheme
                                             .secondary,
                                       ),
-                                       text: AppText.noResultsSuffix,
+                                      text: AppText.noResultsSuffix,
                                     ),
                                   ],
                                 ),
@@ -124,5 +117,16 @@ class _SearchPageState extends State<SearchPage> {
         ),
       ),
     );
+  }
+
+  void _fetchResults(String value) {
+    setState(() {
+      schedule = Api.fetchSchedule(
+        dateFrom: DateTime.now(),
+        dateTo: DateTime.now().addDays(30).endOfDay,
+        searchText: value,
+      );
+      searchText = value;
+    });
   }
 }

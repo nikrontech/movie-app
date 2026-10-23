@@ -35,15 +35,15 @@ class LocationService {
         position.latitude,
         position.longitude,
       );
-      final administrativeArea =
-          placemarks.isEmpty ? null : placemarks.first.administrativeArea;
+      final locality =
+          placemarks.isEmpty ? null : placemarks.first.locality;
       const areaToCity = <String, String>{
-        'Vilniaus apskritis': 'VILNIUS',
-        'Klaipėdos apskritis': 'KLAIPEDA',
-        'Kauno apskritis': 'KAUNAS',
-        'Šiaulių apskritis': 'SIAULIAI',
+        'Vilnius': 'VILNIUS',
+        'Klaipėda': 'KLAIPEDA',
+        'Kaunas': 'KAUNAS',
+        'Šiauliai': 'SIAULIAI',
       };
-      city = areaToCity[administrativeArea];
+      city = areaToCity[locality];
       debugPrint('Current city: ${city ?? 'Unknown'}');
     } catch (error) {
       debugPrint('Could not determine current city: $error');
