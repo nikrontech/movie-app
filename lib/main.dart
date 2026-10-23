@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
     );
 
     return MaterialApp(
+      navigatorKey: LocationService.navigatorKey,
       title: 'Movie app',
       theme: ThemeData(
         primaryColor: Colors.white,
