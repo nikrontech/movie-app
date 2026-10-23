@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:movie_app/pages/schedule_page.dart';
+import 'package:movie_app/services/location_service.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
+  LocationService.fetchLocation();
 }
 
 class MyApp extends StatelessWidget {
