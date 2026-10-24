@@ -52,7 +52,8 @@ class ShowingList extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(AppText.showings,
-              style: theme.textTheme.titleLarge),
+          style: theme.textTheme.titleLarge
+              ?.copyWith(fontWeight: FontWeight.w500)),
           const SizedBox(height: 4),
           Text(formatDate(selectedDate, [yyyy, '-', mm, '-', dd]),
               style:
