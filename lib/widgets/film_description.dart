@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/app_text.dart';
 import 'package:movie_app/models/film.dart';
+import 'package:movie_app/style.dart';
 import 'package:movie_app/utils/html_text.dart';
 
 class FilmDescription extends StatefulWidget {
@@ -86,6 +87,13 @@ class _FilmDescriptionState extends State<FilmDescription> {
               ),
             ),
             TextButton(
+              style: TextButton.styleFrom(
+                // backgroundColor: Colors.black12,
+                foregroundColor: Colors.black,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(Style.border),
+                ),
+              ),
               child: Icon(
                 showFullDescription ? Icons.expand_less : Icons.expand_more,
               ),

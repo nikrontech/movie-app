@@ -64,8 +64,9 @@ class ShowingList extends StatelessWidget {
               width: double.infinity,
               padding: const EdgeInsets.all(Style.padding),
               decoration: BoxDecoration(
-                color: const Color(0xFFF5F5F5),
-                borderRadius: BorderRadius.circular(8),
+                color: Theme.of(context).primaryColor,
+                border: Border.all(color: Style.borderColor),
+                borderRadius: BorderRadius.circular(Style.border),
               ),
               child: Column(children: [
                 const Icon(Icons.event_busy_outlined, size: 32),
@@ -82,8 +83,8 @@ class ShowingList extends StatelessWidget {
               margin: const EdgeInsets.only(bottom: 12),
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                border: Border.all(color: const Color(0xFFE0E0E0)),
-                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Style.borderColor),
+                borderRadius: BorderRadius.circular(Style.border),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -120,9 +121,9 @@ class ShowingList extends StatelessWidget {
                             minimumSize: const Size(96, 48),
                             fixedSize: const Size(96, 48),
                             padding: const EdgeInsets.symmetric(horizontal: 6),
-                            side: const BorderSide(color: Colors.black54),
+                             side: const BorderSide(color: Style.borderColor),
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8)),
+                                borderRadius: BorderRadius.circular(Style.border)),
                           ),
                           child: FittedBox(
                             fit: BoxFit.scaleDown,
@@ -142,8 +143,8 @@ class ShowingList extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 12),
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                            color: const Color(0xFFF5F5F5),
-                            borderRadius: BorderRadius.circular(8),
+                            color: Colors.black12,
+                            borderRadius: BorderRadius.circular(Style.border),
                           ),
                           child: DefaultTextStyle.merge(
                             style: TextStyle(
