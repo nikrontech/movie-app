@@ -1,4 +1,5 @@
 import 'package:dart_date/dart_date.dart';
+import 'package:movie_app/app_text.dart';
 
 class DateUtil {
   static String formatDate(DateTime dt) {
@@ -16,23 +17,23 @@ class DateUtil {
 
   static String getWeekDay(DateTime dt) {
     if (dt.weekday == DateTime.now().weekday) {
-      return 'Šiandien';
+      return AppText.today;
     } else if (dt.weekday == DateTime.now().addDays(1).weekday) {
-      return 'Rytoj';
+      return AppText.tomorrow;
     } else if (dt.weekday == 1) {
-      return 'Pirmadienis';
+      return AppText.monday;
     } else if (dt.weekday == 2) {
-      return 'Antradienis';
+      return AppText.tuesday;
     } else if (dt.weekday == 3) {
-      return 'Trečiadienis';
+      return AppText.wednesday;
     } else if (dt.weekday == 4) {
-      return 'Ketvirtadienis';
+      return AppText.thursday;
     } else if (dt.weekday == 5) {
-      return 'Penktadienis';
+      return AppText.friday;
     } else if (dt.weekday == 6) {
-      return 'Šeštadienis';
+      return AppText.saturday;
     } else if (dt.weekday == 7) {
-      return 'Sekmadienis';
+      return AppText.sunday;
     } else {
       return '';
     }

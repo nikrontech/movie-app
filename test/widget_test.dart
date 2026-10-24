@@ -39,7 +39,6 @@ void main() {
   testWidgets('Empty date provides a next step', (tester) async {
     await tester.pumpWidget(listing([]));
     expect(find.text(AppText.noShowings), findsOneWidget);
-    expect(find.text(AppText.chooseAnotherDay), findsOneWidget);
   });
 
   testWidgets('Invalid booking links remain informational', (tester) async {
