@@ -28,6 +28,9 @@ class FilmCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final showings = [...film.showings]
+      ..sort((left, right) => left.date.compareTo(right.date));
+
     return Card(
       elevation: 0,
       color: Theme.of(context).primaryColor,
@@ -85,6 +88,17 @@ class FilmCard extends StatelessWidget {
                         ],
                       ),
                     ],
+                    if (selectedNow && showings.isNotEmpty)
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          formatDate(
+                              showings.first.date.toLocal(), [HH, ':', nn]),
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                        ),
+                      ),
                     Row(
                       children: <Widget>[
                         Row(
