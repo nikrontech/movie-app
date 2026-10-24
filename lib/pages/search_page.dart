@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dart_date/dart_date.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/app_text.dart';
@@ -24,8 +26,15 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   late Future<Schedule> schedule;
   late String searchText;
+  Timer? searchDebounce;
 
   _SearchPageState(this.schedule, this.searchText);
+
+  @override
+  void dispose() {
+    searchDebounce?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,8 +52,17 @@ class _SearchPageState extends State<SearchPage> {
                 slivers: <Widget>[
                   SliverSearchBar(
                     onBackPressed: () => Navigator.of(context).pop(),
-                    onChanged: _fetchResults,
-                    onSubmitted: _fetchResults,
+                    onChanged: (value) {
+                      searchDebounce?.cancel();
+                      searchDebounce = Timer(
+                        const Duration(milliseconds: 200),
+                        () => _fetchResults(value),
+                      );
+                    },
+                    onSubmitted: (value) {
+                      searchDebounce?.cancel();
+                      _fetchResults(value);
+                    },
                     autofocus: true,
                     placeholder: searchText,
                     alwaysOpen: true,
