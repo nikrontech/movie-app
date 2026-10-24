@@ -36,12 +36,11 @@ class ShowingList extends StatelessWidget {
         .where((showing) => showing.date.toLocal().isSameDay(selectedDate))
         .toList()
       ..sort((a, b) => a.date.compareTo(b.date));
-    final cinemas = <String, Map<String, List<Showing>>>{};
+    final cinemas = <String, List<Showing>>{};
     for (final showing in selected) {
       final name = showing.cinemaName.trim();
       cinemas
-          .putIfAbsent(name.isEmpty ? AppText.cinema : name, () => {})
-          .putIfAbsent(showing.screenType.trim(), () => [])
+          .putIfAbsent(name.isEmpty ? AppText.cinema : name, () => [])
           .add(showing);
     }
     final now = DateTime.now();
@@ -92,74 +91,69 @@ class ShowingList extends StatelessWidget {
                   Text(cinema.key,
                       style: theme.textTheme.titleMedium
                           ?.copyWith(fontWeight: FontWeight.w700)),
-                  for (final format in cinema.value.entries) ...[
-                    const SizedBox(height: 12),
-                    Wrap(
-                      spacing: 8,
-                      runSpacing: 8,
-                      children: format.value.map((showing) {
-                        final time =
-                            formatDate(showing.date.toLocal(), [HH, ':', nn]);
-                        final started = showing.date.isBefore(now);
-                        final uri = Uri.tryParse(showing.ticketLink.trim());
-                        final canBook = !started &&
-                            uri != null &&
-                            (uri.scheme == 'https' || uri.scheme == 'http') &&
-                            uri.host.isNotEmpty;
-                        final label = Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(time,
-                                style: const TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w600)),
-                          ],
-                        );
-                        if (canBook && uri != null) {
-                          return OutlinedButton(
-                            onPressed: () => _openBooking(context, uri),
-                            style: OutlinedButton.styleFrom(
-                              foregroundColor: Colors.black,
-                              minimumSize: const Size(96, 48),
-                              fixedSize: const Size(96, 48),
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 6),
-                              side: const BorderSide(color: Colors.black54),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8)),
-                            ),
-                            child: FittedBox(
-                              fit: BoxFit.scaleDown,
-                              child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    label,
-                                    const SizedBox(width: 6),
-                                    const Icon(Icons.open_in_new, size: 14),
-                                  ]),
-                            ),
-                          );
-                        }
-                        return SizedBox(
-                          width: 96,
-                          height: 48,
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 12),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFF5F5F5),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: DefaultTextStyle.merge(
-                              style: TextStyle(
-                                  color:
-                                      started ? Colors.black54 : Colors.black),
-                              child: label,
-                            ),
+                  const SizedBox(height: 12),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: cinema.value.map((showing) {
+                      final time =
+                          formatDate(showing.date.toLocal(), [HH, ':', nn]);
+                      final started = showing.date.isBefore(now);
+                      final uri = Uri.tryParse(showing.ticketLink.trim());
+                      final canBook = !started &&
+                          uri != null &&
+                          (uri.scheme == 'https' || uri.scheme == 'http') &&
+                          uri.host.isNotEmpty;
+                      final label = Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(time,
+                              style: const TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.w600)),
+                        ],
+                      );
+                      if (canBook && uri != null) {
+                        return OutlinedButton(
+                          onPressed: () => _openBooking(context, uri),
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: Colors.black,
+                            minimumSize: const Size(96, 48),
+                            fixedSize: const Size(96, 48),
+                            padding: const EdgeInsets.symmetric(horizontal: 6),
+                            side: const BorderSide(color: Colors.black54),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8)),
+                          ),
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child:
+                                Row(mainAxisSize: MainAxisSize.min, children: [
+                              label,
+                              const SizedBox(width: 6),
+                              const Icon(Icons.open_in_new, size: 14),
+                            ]),
                           ),
                         );
-                      }).toList(),
-                    ),
-                  ],
+                      }
+                      return SizedBox(
+                        width: 96,
+                        height: 48,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF5F5F5),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: DefaultTextStyle.merge(
+                            style: TextStyle(
+                                color: started ? Colors.black54 : Colors.black),
+                            child: label,
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
                 ],
               ),
             ),
