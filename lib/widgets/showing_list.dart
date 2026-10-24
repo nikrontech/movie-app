@@ -52,8 +52,7 @@ class ShowingList extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(AppText.showings,
-              style: theme.textTheme.titleLarge
-                  ?.copyWith(fontWeight: FontWeight.w500)),
+              style: theme.textTheme.titleLarge),
           const SizedBox(height: 4),
           Text(formatDate(selectedDate, [yyyy, '-', mm, '-', dd]),
               style:
@@ -90,8 +89,7 @@ class ShowingList extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(cinema.key,
-                      style: theme.textTheme.titleMedium
-                          ?.copyWith(fontWeight: FontWeight.w700)),
+                      style: theme.textTheme.titleMedium),
                   const SizedBox(height: 12),
                   Wrap(
                     spacing: 8,
@@ -108,9 +106,7 @@ class ShowingList extends StatelessWidget {
                       final label = Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(time,
-                              style: const TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.w600)),
+                          Text(time),
                         ],
                       );
                       if (canBook && uri != null) {
