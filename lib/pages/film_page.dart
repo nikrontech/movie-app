@@ -65,15 +65,14 @@ class _FilmPageState extends State<FilmPage> {
 
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _loadFilmForDate(selectedShowingDate);
+      _loadFilm();
     });
   }
 
-  Future<void> _loadFilmForDate(DateTime date) async {
+  Future<void> _loadFilm() async {
     if (!mounted) return;
     final request = ++showingRequest;
     setState(() {
-      selectedShowingDate = date;
       loadingShowings = true;
       showingsFailed = false;
     });
@@ -118,7 +117,7 @@ class _FilmPageState extends State<FilmPage> {
                     right: Style.margin,
                   ),
                   onChanged: (date) {
-                    _loadFilmForDate(date);
+                    setState(() => selectedShowingDate = date);
                   },
                 ),
               ),
@@ -351,8 +350,7 @@ class _FilmPageState extends State<FilmPage> {
                               child: Column(children: [
                                 const Text(AppText.showingsFailed),
                                 TextButton(
-                                  onPressed: () =>
-                                      _loadFilmForDate(selectedShowingDate),
+                                  onPressed: () => _loadFilm(),
                                   child: const Text(AppText.retry),
                                 ),
                               ]),
