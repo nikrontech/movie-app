@@ -71,12 +71,23 @@ class _SchedulePageState extends State<SchedulePage> {
                 return Center(
                   child: Padding(
                     padding: const EdgeInsets.all(Style.padding),
-                    child: Text(
-                      'Unable to load films: ${snapshot.error}',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.wifi_off_outlined,
+                          size: Style.iconSize,
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                        const SizedBox(height: Style.padding),
+                        Text(
+                          AppText.loadFailed,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 );
