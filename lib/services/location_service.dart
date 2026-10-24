@@ -46,6 +46,7 @@ class LocationService {
         'Klaipėda': 'KLAIPEDA',
         'Kaunas': 'KAUNAS',
         'Šiauliai': 'SIAULIAI',
+        'Panevėžys': 'PANEVEZYS',
       };
       city = areaToCity[locality];
       debugPrint('Current city: ${city ?? 'Unknown'}');
