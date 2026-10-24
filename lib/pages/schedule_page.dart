@@ -113,6 +113,22 @@ class _SchedulePageState extends State<SchedulePage> {
                   physics: const ClampingScrollPhysics(),
                   slivers: <Widget>[
                     SliverSearchBar(
+                      onSearchPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => SearchPage(
+                              searchText: '',
+                              schedule: Api.fetchSchedule(
+                                dateFrom: selectedDate,
+                                dateTo: selectedDate
+                                    .addDays(7)
+                                    .endOfDay,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
                       onSubmitted: (String searchText) {
                         Navigator.push(
                           context,

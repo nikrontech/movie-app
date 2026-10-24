@@ -6,6 +6,7 @@ class SliverSearchBar extends StatefulWidget {
   final Function(String searchText) onSubmitted;
   final Function(String searchText)? onChanged;
   final VoidCallback? onBackPressed;
+  final VoidCallback? onSearchPressed;
   final bool autofocus;
   final String placeholder;
   final bool alwaysOpen;
@@ -15,6 +16,7 @@ class SliverSearchBar extends StatefulWidget {
     required this.onSubmitted,
     this.onChanged,
     this.onBackPressed,
+    this.onSearchPressed,
     this.autofocus = true,
     this.placeholder = "",
     this.alwaysOpen = false,
@@ -130,9 +132,7 @@ class _SliverSearchBarState extends State<SliverSearchBar> {
           IconButton(
             color: Theme.of(context).primaryColor,
             icon: const Icon(Icons.search),
-            onPressed: () {
-              toggle();
-            },
+            onPressed: widget.onSearchPressed ?? toggle,
           ),
         ] else if (showClearIcon) ...[
           IconButton(

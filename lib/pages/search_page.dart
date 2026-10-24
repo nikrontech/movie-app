@@ -45,7 +45,7 @@ class _SearchPageState extends State<SearchPage> {
                     onBackPressed: () => Navigator.of(context).pop(),
                     onChanged: _fetchResults,
                     onSubmitted: _fetchResults,
-                    autofocus: false,
+                    autofocus: true,
                     placeholder: searchText,
                     alwaysOpen: true,
                   ),
