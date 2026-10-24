@@ -354,10 +354,6 @@ class _FilmPageState extends State<FilmPage> {
                                   const EdgeInsets.only(top: Style.padding),
                               child: Column(children: [
                                 const Text(AppText.showingsFailed),
-                                TextButton(
-                                  onPressed: () => _loadFilm(),
-                                  child: const Text(AppText.retry),
-                                ),
                               ]),
                             ),
                           if ((!loadingShowings && !showingsFailed) ||
