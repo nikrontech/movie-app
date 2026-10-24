@@ -117,6 +117,7 @@ class _FilmPageState extends State<FilmPage> {
                     right: Style.margin,
                   ),
                   onChanged: (date) {
+                    scrollController.jumpTo(scrollController.position.pixels - 1);
                     setState(() => selectedShowingDate = date);
                   },
                 ),
