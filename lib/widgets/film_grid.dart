@@ -6,9 +6,14 @@ import 'package:movie_app/widgets/film_card.dart';
 class FilmGrid extends StatelessWidget {
   final List<Film> films;
   final DateTime? selectedDate;
+  final bool selectedNow;
 
-  const FilmGrid({Key? key, required this.films, this.selectedDate})
-      : super(key: key);
+  const FilmGrid({
+    Key? key,
+    required this.films,
+    this.selectedDate,
+    this.selectedNow = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +30,7 @@ class FilmGrid extends StatelessWidget {
           (context, index) => FilmCard(
             film: films[index],
             selectedDate: selectedDate,
+            selectedNow: selectedNow,
             showTitle: true,
           ),
           childCount: films.length,

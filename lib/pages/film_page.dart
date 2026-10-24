@@ -16,12 +16,14 @@ class FilmPage extends StatefulWidget {
   final Film film;
   final double appBarHeight;
   final DateTime? selectedDate;
+  final bool selectedNow;
 
   const FilmPage({
     Key? key,
     required this.film,
     this.appBarHeight = 250,
     this.selectedDate,
+    this.selectedNow = false,
   }) : super(key: key);
 
   @override
@@ -112,12 +114,14 @@ class _FilmPageState extends State<FilmPage> {
                 padding: const EdgeInsets.only(top: 8, bottom: 8),
                 child: WeekButtonList(
                   initialDate: selectedShowingDate,
+                  initialNow: widget.selectedNow,
                   margin: const EdgeInsets.only(
                     left: Style.margin,
                     right: Style.margin,
                   ),
                   onChanged: (date) {
-                    scrollController.jumpTo(scrollController.position.pixels - 1);
+                    scrollController
+                        .jumpTo(scrollController.position.pixels - 1);
                     setState(() => selectedShowingDate = date);
                   },
                 ),

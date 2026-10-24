@@ -5,13 +5,17 @@ import 'package:movie_app/utils/date_util.dart';
 class WeekButtonList extends StatefulWidget {
   final EdgeInsets margin;
   final DateTime? initialDate;
+  final bool initialNow;
   final Function(DateTime dateSelected) onChanged;
+  final VoidCallback? onNowPressed;
 
   const WeekButtonList({
     Key? key,
     this.margin = EdgeInsets.zero,
     this.initialDate,
+    this.initialNow = false,
     required this.onChanged,
+    this.onNowPressed,
   }) : super(key: key);
 
   @override
@@ -21,6 +25,7 @@ class WeekButtonList extends StatefulWidget {
 class _WeekButtonListState extends State<WeekButtonList> {
   late DateTime today;
   late DateTime dateSelected;
+  late bool nowSelected;
   late final ScrollController scrollController;
   late final List<GlobalKey> dayKeys;
 
@@ -28,8 +33,9 @@ class _WeekButtonListState extends State<WeekButtonList> {
   void initState() {
     today = DateTime.now();
     dateSelected = widget.initialDate ?? today;
+    nowSelected = widget.initialNow;
     scrollController = ScrollController();
-    dayKeys = List<GlobalKey>.generate(7, (_) => GlobalKey());
+    dayKeys = List<GlobalKey>.generate(8, (_) => GlobalKey());
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollToSelectedDay(animate: false);
@@ -51,7 +57,7 @@ class _WeekButtonListState extends State<WeekButtonList> {
       cacheExtent: 1000,
       physics: const ClampingScrollPhysics(),
       scrollDirection: Axis.horizontal,
-      itemCount: 7,
+      itemCount: 8,
       itemBuilder: (context, i) {
         return Container(
           key: dayKeys[i],
@@ -60,26 +66,20 @@ class _WeekButtonListState extends State<WeekButtonList> {
             right: i == 6 ? widget.margin.right : widget.margin.right / 4,
           ),
           child: TextButton(
-            onPressed: () {
-              if (!dateSelected.isSameDay(today.addDays(i))) {
-                setState(() => dateSelected = today.addDays(i));
-                _scrollToSelectedDay();
-                widget.onChanged(dateSelected);
-              }
-            },
+            onPressed: () => _selectDay(i),
             style: TextButton.styleFrom(
               minimumSize: const Size(72, 48),
               padding: const EdgeInsets.symmetric(horizontal: 8),
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(8)),
               ),
-              backgroundColor: dateSelected.isSameDay(today.addDays(i))
+              backgroundColor: _isSelected(i)
                   ? Theme.of(context).colorScheme.secondary
                   : Theme.of(context).primaryColor,
             ),
-            child: Text(DateUtil.getWeekDay(today.addDays(i)),
+            child: Text(_labelFor(i),
                 style: TextStyle(
-                    color: dateSelected.isSameDay(today.addDays(i))
+                    color: _isSelected(i)
                         ? Theme.of(context).primaryColor
                         : Theme.of(context).colorScheme.secondary)),
           ),
@@ -87,6 +87,31 @@ class _WeekButtonListState extends State<WeekButtonList> {
       },
     );
   }
+
+  void _selectDay(int index) {
+    if (index == 0) {
+      setState(() => nowSelected = true);
+      widget.onNowPressed?.call();
+      if (widget.onNowPressed == null) widget.onChanged(DateTime.now());
+      return;
+    }
+
+    final date = today.addDays(index - 1);
+    if (dateSelected.isSameDay(date) && !nowSelected) return;
+    setState(() {
+      nowSelected = false;
+      dateSelected = date;
+    });
+    _scrollToSelectedDay();
+    widget.onChanged(date);
+  }
+
+  bool _isSelected(int index) => index == 0
+      ? nowSelected
+      : !nowSelected && dateSelected.isSameDay(today.addDays(index - 1));
+
+  String _labelFor(int index) =>
+      index == 0 ? 'Dabar' : DateUtil.getWeekDay(today.addDays(index - 1));
 
   void _scrollToSelectedDay({bool animate = true}) {
     final index = _selectedDayIndex();
@@ -104,8 +129,10 @@ class _WeekButtonListState extends State<WeekButtonList> {
   }
 
   int? _selectedDayIndex() {
-    for (int i = 0; i < 7; i++) {
-      if (dateSelected.isSameDay(today.addDays(i))) return i;
+    for (int i = 1; i < 8; i++) {
+      if (!nowSelected && dateSelected.isSameDay(today.addDays(i - 1))) {
+        return i;
+      }
     }
     return null;
   }

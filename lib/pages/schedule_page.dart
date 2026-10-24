@@ -20,6 +20,7 @@ class SchedulePage extends StatefulWidget {
 class _SchedulePageState extends State<SchedulePage> {
   late Future<Schedule> schedule;
   DateTime selectedDate = DateTime.now();
+  bool selectedNow = false;
 
   @override
   void initState() {
@@ -52,8 +53,20 @@ class _SchedulePageState extends State<SchedulePage> {
                   onChanged: (DateTime dateSelected) {
                     setState(() {
                       selectedDate = dateSelected;
+                      selectedNow = false;
                       schedule = Api.fetchSchedule(
                         dateFrom: dateSelected,
+                      );
+                    });
+                  },
+                  onNowPressed: () {
+                    final now = DateTime.now();
+                    setState(() {
+                      selectedDate = now;
+                      selectedNow = true;
+                      schedule = Api.fetchSchedule(
+                        dateFrom: now,
+                        dateTo: now.add(const Duration(hours: 2)),
                       );
                     });
                   },
@@ -122,7 +135,11 @@ class _SchedulePageState extends State<SchedulePage> {
                       ),
                     ),
                     if (films.isNotEmpty) ...[
-                      FilmGrid(films: films, selectedDate: selectedDate),
+                      FilmGrid(
+                        films: films,
+                        selectedDate: selectedDate,
+                        selectedNow: selectedNow,
+                      ),
                     ] else ...[
                       SliverFillRemaining(
                         child: Padding(

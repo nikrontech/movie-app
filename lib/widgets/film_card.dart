@@ -13,6 +13,7 @@ class FilmCard extends StatelessWidget {
   final bool showShowingTime;
   final bool showTitle;
   final DateTime? selectedDate;
+  final bool selectedNow;
 
   const FilmCard({
     Key? key,
@@ -22,6 +23,7 @@ class FilmCard extends StatelessWidget {
     this.showShowingTime = false,
     this.showTitle = false,
     this.selectedDate,
+    this.selectedNow = false,
   }) : super(key: key);
 
   @override
@@ -44,6 +46,7 @@ class FilmCard extends StatelessWidget {
               builder: (BuildContext context) => FilmPage(
                 film: film,
                 selectedDate: selectedDate,
+                selectedNow: selectedNow,
               ),
             ),
           );
