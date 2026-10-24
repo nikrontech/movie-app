@@ -89,35 +89,12 @@ class _SearchPageState extends State<SearchPage> {
                               padding: const EdgeInsets.only(
                                 top: Style.padding,
                               ),
-                              child: RichText(
-                                text: TextSpan(
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                      style: TextStyle(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary,
-                                      ),
-                                      text: '${AppText.noResults} ',
-                                    ),
-                                    TextSpan(
-                                      style: TextStyle(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      text: searchText.trim(),
-                                    ),
-                                    TextSpan(
-                                      style: TextStyle(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary,
-                                      ),
-                                      text: AppText.noResultsSuffix,
-                                    ),
-                                  ],
+                              child: Text(
+                                AppText.noResults,
+                                style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .secondary,
                                 ),
                               ),
                             ),

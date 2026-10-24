@@ -10,8 +10,7 @@ class AppText {
   static const String loadFailed =
       'Nepavyko įkelti filmų. Patikrinkite interneto ryšį ir bandykite dar kartą.';
   static const String noShowings = 'Pasirinktu metu seansų nerasta.';
-  static const String noResults = 'Rezultatų pagal';
-  static const String noResultsSuffix = ' nerasta.';
+  static const String noResults = 'Rezultatų nerasta.';
   static const String searchMovies = 'Ieškoti filmų...';
   static const String today = 'Šiandien';
   static const String tomorrow = 'Rytoj';
