@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
     );
 
     return MaterialApp(
-      title: 'Movie app',
+      title: 'Seansas',
       theme: ThemeData(
         primaryColor: Colors.white,
         progressIndicatorTheme:
