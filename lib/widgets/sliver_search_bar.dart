@@ -85,7 +85,7 @@ class _SliverSearchBarState extends State<SliverSearchBar> {
               : Padding(
                   padding: const EdgeInsets.all(10),
                   child: Image.asset(
-                    'assets/icon.png',
+                    'assets/icon_transparent.png',
                     fit: BoxFit.contain,
                   ),
                 ),
