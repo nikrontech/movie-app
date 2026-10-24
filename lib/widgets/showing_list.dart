@@ -53,7 +53,7 @@ class ShowingList extends StatelessWidget {
         children: [
           Text(AppText.showings,
               style: theme.textTheme.titleLarge
-                  ?.copyWith(fontWeight: FontWeight.w700)),
+                  ?.copyWith(fontWeight: FontWeight.w500)),
           const SizedBox(height: 4),
           Text(formatDate(selectedDate, [yyyy, '-', mm, '-', dd]),
               style:
@@ -71,10 +71,10 @@ class ShowingList extends StatelessWidget {
               child: Column(children: [
                 const Icon(Icons.event_busy_outlined, size: 32),
                 const SizedBox(height: 12),
-                Text(AppText.noShowings, style: theme.textTheme.titleMedium),
-                const SizedBox(height: 8),
-                const Text(AppText.chooseAnotherDay,
-                    textAlign: TextAlign.center),
+                Text(AppText.noShowings,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.secondary,
+                    )),
               ]),
             ),
           for (final cinema in cinemas.entries)
@@ -121,9 +121,10 @@ class ShowingList extends StatelessWidget {
                             minimumSize: const Size(96, 48),
                             fixedSize: const Size(96, 48),
                             padding: const EdgeInsets.symmetric(horizontal: 6),
-                             side: const BorderSide(color: Style.borderColor),
+                            side: const BorderSide(color: Style.borderColor),
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(Style.border)),
+                                borderRadius:
+                                    BorderRadius.circular(Style.border)),
                           ),
                           child: FittedBox(
                             fit: BoxFit.scaleDown,
