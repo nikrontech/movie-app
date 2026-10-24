@@ -4,8 +4,13 @@ import 'package:geolocator/geolocator.dart';
 
 class LocationService {
   static String? city;
+  static Future<void>? _fetchFuture;
 
-  static Future<void> fetchLocation() async {
+  static Future<void> fetchLocation() {
+    return _fetchFuture ??= _fetchLocation();
+  }
+
+  static Future<void> _fetchLocation() async {
     try {
       if (!await Geolocator.isLocationServiceEnabled()) {
         debugPrint('Location service is disabled');
@@ -35,8 +40,7 @@ class LocationService {
         position.latitude,
         position.longitude,
       );
-      final locality =
-          placemarks.isEmpty ? null : placemarks.first.locality;
+      final locality = placemarks.isEmpty ? null : placemarks.first.locality;
       const areaToCity = <String, String>{
         'Vilnius': 'VILNIUS',
         'Klaipėda': 'KLAIPEDA',
