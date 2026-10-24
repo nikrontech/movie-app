@@ -120,10 +120,8 @@ class _SchedulePageState extends State<SchedulePage> {
                             builder: (_) => SearchPage(
                               searchText: '',
                               schedule: Api.fetchSchedule(
-                                dateFrom: selectedDate,
-                                dateTo: selectedDate
-                                    .addDays(7)
-                                    .endOfDay,
+                                dateFrom: DateTime.now(),
+                                dateTo: DateTime.now().addDays(6).endOfDay,
                               ),
                             ),
                           ),
@@ -137,7 +135,7 @@ class _SchedulePageState extends State<SchedulePage> {
                               searchText: searchText,
                               schedule: Api.fetchSchedule(
                                 dateFrom: DateTime.now(),
-                                dateTo: DateTime.now().addDays(7).endOfDay,
+                                dateTo: DateTime.now().addDays(6).endOfDay,
                                 searchText: searchText,
                               ),
                             ),

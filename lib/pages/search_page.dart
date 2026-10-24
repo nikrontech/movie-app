@@ -118,7 +118,7 @@ class _SearchPageState extends State<SearchPage> {
     setState(() {
       schedule = Api.fetchSchedule(
         dateFrom: DateTime.now(),
-        dateTo: DateTime.now().addDays(30).endOfDay,
+        dateTo: DateTime.now().addDays(6).endOfDay,
         searchText: value,
       );
       searchText = value;
