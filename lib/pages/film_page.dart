@@ -1,3 +1,4 @@
+import 'package:dart_date/dart_date.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -41,11 +42,13 @@ class _FilmPageState extends State<FilmPage> {
   bool loadingShowings = false;
   bool showingsFailed = false;
   int showingRequest = 0;
+  late bool nowSelected;
 
   @override
   void initState() {
     film = widget.film;
     selectedShowingDate = widget.selectedDate ?? DateTime.now();
+    nowSelected = widget.selectedNow;
     videoPlayer = film.trailer.isNotEmpty
         ? VideoPlayer(url: Api.getVideoUrl(film.trailer))
         : null;
@@ -81,8 +84,21 @@ class _FilmPageState extends State<FilmPage> {
     try {
       final updatedFilm = await Api.fetchFilm(id: film.id);
       if (!mounted || request != showingRequest) return;
+      final selectedHasShowings = updatedFilm.showings.any(
+        (showing) => showing.date.toLocal().isSameDay(selectedShowingDate),
+      );
+      final firstShowingDate = updatedFilm.showings.isEmpty
+          ? selectedShowingDate
+          : updatedFilm.showings
+              .map((showing) => showing.date.toLocal())
+              .reduce((first, showing) =>
+                  showing.isBefore(first) ? showing : first);
       setState(() {
         film = updatedFilm;
+        if (!selectedHasShowings) {
+          selectedShowingDate = firstShowingDate;
+          nowSelected = false;
+        }
         loadingShowings = false;
       });
     } catch (_) {
@@ -114,7 +130,7 @@ class _FilmPageState extends State<FilmPage> {
                 padding: const EdgeInsets.only(top: 8, bottom: 8),
                 child: WeekButtonList(
                   initialDate: selectedShowingDate,
-                  initialNow: widget.selectedNow,
+                  initialNow: nowSelected,
                   margin: const EdgeInsets.only(
                     left: Style.margin,
                     right: Style.margin,
@@ -122,7 +138,16 @@ class _FilmPageState extends State<FilmPage> {
                   onChanged: (date) {
                     scrollController
                         .jumpTo(scrollController.position.pixels - 1);
-                    setState(() => selectedShowingDate = date);
+                    setState(() {
+                      nowSelected = false;
+                      selectedShowingDate = date;
+                    });
+                  },
+                  onNowPressed: () {
+                    setState(() {
+                      nowSelected = true;
+                      selectedShowingDate = DateTime.now();
+                    });
                   },
                 ),
               ),

@@ -49,6 +49,17 @@ class _WeekButtonListState extends State<WeekButtonList> {
   }
 
   @override
+  void didUpdateWidget(covariant WeekButtonList oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.initialDate != null &&
+        !widget.initialDate!.isSameDay(dateSelected)) {
+      dateSelected = widget.initialDate!;
+      nowSelected = widget.initialNow;
+      _scrollToSelectedDay(animate: false);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     today = DateTime.now();
 
