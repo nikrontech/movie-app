@@ -51,14 +51,6 @@ class ShowingList extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(AppText.showings,
-          style: theme.textTheme.titleLarge
-              ?.copyWith(fontWeight: FontWeight.w500)),
-          const SizedBox(height: 4),
-          Text(formatDate(selectedDate, [yyyy, '-', mm, '-', dd]),
-              style:
-                  theme.textTheme.bodyMedium?.copyWith(color: Colors.black54)),
-          const SizedBox(height: 16),
           if (cinemas.isEmpty)
             Container(
               width: double.infinity,
